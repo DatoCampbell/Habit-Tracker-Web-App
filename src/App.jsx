@@ -1,35 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import useLocalStorage from './hooks/useLocalStorage';
+import AddHabitForm from './components/AddHabitForm';
+import HabitList from './components/HabitList';
+import ProgressBar from './components/ProgressBar';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [habits, setHabits] = useLocalStorage('habits', []);
+  const [completions, setCompletions] = useLocalStorage('completions', {});
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const addHabit = (newHabit) => {
+    const habit = {
+      id: Date.now().toString(),
+      ...newHabit,
+      createdAt: new Date().toISOString(),
+    };
+    setHabits([...habits, habit]);
+  };
+
+  const editHabit = (id, updatedHabit) => {
+    setHabits(habits.map(h => h.id === id ? { ...h, ...updatedHabit } : h));
+  };
+
+  const deleteHabit = (id) => {
+    setHabits(habits.filter(h => h.id !== id));
+    const newCompletions = { ...completions };
+    delete newCompletions[id];
+    setCompletions(newCompletions);
+  };
+
+  const toggleComplete = (id) => {
+    const habitCompletions = completions[id] || [];
+    const isCompleted = habitCompletions.includes(today);
+    if (isCompleted) {
+      setCompletions({
+        ...completions,
+        [id]: habitCompletions.filter(date => date !== today),
+      });
+    } else {
+      setCompletions({
+        ...completions,
+        [id]: [...habitCompletions, today],
+      });
+    }
+  };
+
+  const completedToday = habits.filter(habit => (completions[habit.id] || []).includes(today)).length;
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="container mx-auto px-4 max-w-2xl">
+        <h1 className="text-3xl font-bold text-center mb-8">Habit Tracker</h1>
+        <AddHabitForm onAddHabit={addHabit} />
+        <ProgressBar completed={completedToday} total={habits.length} />
+        <HabitList
+          habits={habits}
+          completions={completions}
+          onToggleComplete={toggleComplete}
+          onEditHabit={editHabit}
+          onDeleteHabit={deleteHabit}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
