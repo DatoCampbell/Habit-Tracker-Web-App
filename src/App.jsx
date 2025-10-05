@@ -3,10 +3,14 @@ import useLocalStorage from './hooks/useLocalStorage';
 import AddHabitForm from './components/AddHabitForm';
 import HabitList from './components/HabitList';
 import ProgressBar from './components/ProgressBar';
+import CalendarView from './components/CalendarView';
+import StatisticsDashboard from './components/StatisticsDashboard';
+import DataExport from './components/DataExport';
 
 function App() {
   const [habits, setHabits] = useLocalStorage('habits', []);
   const [completions, setCompletions] = useLocalStorage('completions', {});
+  const [activeTab, setActiveTab] = useState('habits');
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -59,9 +63,16 @@ function App() {
     return "🌱 Every journey begins with a single step!";
   };
 
+  const tabs = [
+    { id: 'habits', label: 'Habits', icon: '🎯' },
+    { id: 'calendar', label: 'Calendar', icon: '📅' },
+    { id: 'statistics', label: 'Statistics', icon: '📊' },
+    { id: 'data', label: 'Data', icon: '💾' },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
-      <div className="container mx-auto px-4 max-w-2xl">
+      <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-8 animate-fade-in-up">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
             🌟 Habit Tracker
@@ -69,25 +80,56 @@ function App() {
           <p className="text-gray-600 text-lg">{getMotivationalMessage()}</p>
         </div>
 
+        {/* Navigation Tabs */}
+        <div className="mb-6 bg-white rounded-xl shadow-lg p-2 border border-gray-100">
+          <div className="flex space-x-1">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
+                  activeTab === tab.id
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md transform scale-105'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <span className="mr-2">{tab.icon}</span>
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tab Content */}
         <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          <AddHabitForm onAddHabit={addHabit} />
+          {activeTab === 'habits' && (
+            <>
+              <AddHabitForm onAddHabit={addHabit} />
+              <ProgressBar completed={completedToday} total={habits.length} />
+              <HabitList
+                habits={habits}
+                completions={completions}
+                onToggleComplete={toggleComplete}
+                onEditHabit={editHabit}
+                onDeleteHabit={deleteHabit}
+              />
+            </>
+          )}
+
+          {activeTab === 'calendar' && (
+            <CalendarView completions={completions} habits={habits} />
+          )}
+
+          {activeTab === 'statistics' && (
+            <StatisticsDashboard habits={habits} completions={completions} />
+          )}
+
+          {activeTab === 'data' && (
+            <DataExport habits={habits} completions={completions} />
+          )}
         </div>
 
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          <ProgressBar completed={completedToday} total={habits.length} />
-        </div>
-
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-          <HabitList
-            habits={habits}
-            completions={completions}
-            onToggleComplete={toggleComplete}
-            onEditHabit={editHabit}
-            onDeleteHabit={deleteHabit}
-          />
-        </div>
-
-        {habits.length === 0 && (
+        {habits.length === 0 && activeTab === 'habits' && (
           <div className="text-center mt-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <div className="text-6xl mb-4 animate-pulse-gentle">🎯</div>
             <h3 className="text-xl font-semibold text-gray-700 mb-2">Ready to build better habits?</h3>

@@ -11,8 +11,11 @@ A beautiful, modern web application to track your daily habits with gamification
 - **✅ Daily Checklist**: Interactive habit completion with celebratory animations
 - **🔥 Streak Tracking**: View your current streak for each habit with achievement badges
 - **📊 Progress Visualization**: Animated progress bar with color-coded completion levels
-- **🎉 Motivational Messages**: Dynamic encouragement based on your progress
-- **🎭 Random Icons**: Each habit gets a fun emoji icon for visual appeal
+- **📅 Calendar View**: Monthly calendar showing habit completion history with visual indicators
+- **📈 Statistics Dashboard**: Comprehensive analytics including completion rates, top habits, and progress charts
+- **💾 Data Management**: Export/import habit data and clear all data with backup functionality
+- **🎉 Motivational Messages**: Dynamic encouragement based on your progress percentage
+- **🎭 Random Icons**: Each habit gets a fun emoji icon for better visual organization
 - **💾 Local Storage**: All data persists between sessions without needing a backend
 - **📱 Responsive Design**: Works seamlessly on desktop and mobile devices
 - **⚡ Smooth Animations**: Fade-in effects, hover animations, and completion celebrations
@@ -160,17 +163,35 @@ Since this app uses localStorage for data storage, it works completely offline o
 
 ## 🎮 Usage
 
+The app features four main sections accessible via the navigation tabs at the top:
+
+### 🎯 Habits Tab
 1. **Adding a Habit**: Use the beautiful "Add New Habit" form to create a new habit. Each habit automatically gets a fun emoji icon!
 
 2. **Tracking Progress**: Click the circular icon next to each habit to mark it as completed. Watch the celebratory animation and see your progress bar update in real-time!
 
 3. **Viewing Streaks**: See your current streak displayed below each habit name. Earn achievement badges for 7+ day and 30+ day streaks! 🔥⭐👑
 
-4. **Motivational Feedback**: Get personalized encouragement messages based on your daily progress percentage.
+4. **Editing Habits**: Click the "✏️ Edit" button next to a habit to modify its name or description.
 
-5. **Editing Habits**: Click the "✏️ Edit" button next to a habit to modify its name or description.
+5. **Deleting Habits**: Click the "🗑️ Delete" button to remove a habit from your list.
 
-6. **Deleting Habits**: Click the "🗑️ Delete" button to remove a habit from your list.
+### 📅 Calendar Tab
+- View your habit completion history in a monthly calendar format
+- Green dots: All habits completed that day
+- Yellow dots: Some habits completed that day
+- Gray dots: No habits completed that day
+- Navigate between months and jump back to today
+
+### 📊 Statistics Tab
+- **Key Metrics**: Total habits, active habits, longest streak, monthly completion rate
+- **Top Performing Habits**: See which habits you complete most consistently
+- **Progress Charts**: Visual representation of your last 14 days of habit completion
+
+### 💾 Data Tab
+- **Export Data**: Download your habits and progress as a JSON backup file
+- **Import Data**: Upload a previously exported backup to restore your data
+- **Clear All Data**: Permanently remove all habits and completion history
 
 ## 📈 Gamification Features
 
@@ -185,16 +206,19 @@ Since this app uses localStorage for data storage, it works completely offline o
 ```
 src/
 ├── components/
-│   ├── AddHabitForm.jsx    # Form for adding new habits
-│   ├── HabitItem.jsx       # Individual habit component
-│   ├── HabitList.jsx       # List of all habits
-│   └── ProgressBar.jsx     # Daily progress visualization
+│   ├── AddHabitForm.jsx       # Form for adding new habits
+│   ├── CalendarView.jsx       # Monthly calendar with completion history
+│   ├── DataExport.jsx         # Data management (export/import/clear)
+│   ├── HabitItem.jsx          # Individual habit component
+│   ├── HabitList.jsx          # List of all habits
+│   ├── ProgressBar.jsx        # Daily progress visualization
+│   └── StatisticsDashboard.jsx # Analytics and statistics
 ├── hooks/
-│   └── useLocalStorage.js  # Custom hook for localStorage persistence
-├── App.jsx                 # Main application component
-├── index.css               # Global styles with Tailwind imports
-└── main.jsx                # Application entry point
-public/                     # Static assets (currently empty)
+│   └── useLocalStorage.js     # Custom hook for localStorage persistence
+├── App.jsx                    # Main application with tab navigation
+├── index.css                  # Global styles with Tailwind imports
+└── main.jsx                   # Application entry point
+public/                        # Static assets (currently empty)
 ```
 
 ## Contributing
@@ -210,16 +234,18 @@ Contributions are welcome! This project is open-source and beginner-friendly. He
 
 ### Ideas for Contributions
 
-- **📅 Calendar View**: Add a monthly calendar showing past completions with visual indicators
-- **📊 Advanced Analytics**: Detailed statistics, trends, and habit performance insights
-- **🔔 Notifications**: Browser notifications for habit reminders and streak maintenance
-- **☁️ Cloud Sync**: Optional cloud storage integration for cross-device synchronization
-- **🎨 Themes**: Dark mode, custom color schemes, and personalization options
-- **📤 Data Export**: Export habit data to CSV, JSON, or PDF formats
+- **🌙 Dark Mode**: Toggle between light and dark themes for better user experience
+- **� PWA Features**: Progressive Web App capabilities for mobile installation
+- **🔔 Browser Notifications**: Optional reminders for habit completion times
+- **📊 Advanced Analytics**: Trend analysis, habit correlations, and predictive insights
+- **� Habit Categories**: Group habits by categories (Health, Productivity, Learning, etc.)
+- **📤 Data Export Options**: Export to CSV, PDF reports, or shareable formats
+- **🔄 Habit Templates**: Pre-built habit collections for common goals
 - **👥 Social Features**: Share achievements and compete with friends
-- **🎵 Sound Effects**: Optional audio feedback for habit completions
-- **📱 PWA**: Progressive Web App features for mobile installation
-- **🔄 Habit Templates**: Pre-built habit categories and templates for common goals
+- **🎵 Sound Effects**: Customizable audio feedback for habit completions
+- **� Weekly/Monthly Goals**: Set and track completion targets
+- **🔥 Streak Challenges**: Community challenges and streak competitions
+- **� Habit Insights**: AI-powered suggestions for habit improvement
 
 ## License
 
