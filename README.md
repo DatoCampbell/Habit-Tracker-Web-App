@@ -66,8 +66,7 @@ src/
 ├── App.jsx                 # Main application component
 ├── index.css               # Global styles with Tailwind imports
 └── main.jsx                # Application entry point
-public/
-└── ...                     # Static assets
+public/                     # Static assets (currently empty)
 ```
 
 ## Contributing
